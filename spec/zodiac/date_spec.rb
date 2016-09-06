@@ -25,7 +25,7 @@ module Zodiac
           @date.zodiac_sign_symbol.should == :libra
         end
         
-        Zodiac.each_sign do |symbol, integer|
+        Zodiac.each_sign do |symbol, _integer|
           method_name = "#{symbol}?"
           it "provides ##{method_name}" do
             @date.should respond_to(method_name)

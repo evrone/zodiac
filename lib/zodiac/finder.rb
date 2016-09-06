@@ -1,18 +1,18 @@
 module Zodiac
   module Finder
     YEAR = 2012
-    
+
     class << self
       def date_for(month, day)
         DateTime.new(YEAR, month, day)
       end
-      
+
       def range_for(month_start, day_start, month_end, day_end)
         start, ending = date_for(month_start, day_start), date_for(month_end, day_end)
         SimpleRange.new(start, ending)
       end
     end
-    
+
     RANGES = {
       range_for(1,  1,  1,  20) => :capricorn,
       range_for(1,  21, 2,  19) => :aquarius,
@@ -28,7 +28,7 @@ module Zodiac
       range_for(11, 23, 12, 22) => :sagittarius,
       range_for(12, 23, 12, 31) => :capricorn
     }
-    
+
     SIGN_IDS = {
       aries:       1,
       taurus:      2,
@@ -43,24 +43,23 @@ module Zodiac
       aquarius:    11,
       pisces:      12
     }
-    
+
     class << self
       def sign_for(date)
         I18n.t!("zodiac.#{self.sign_symbol_for date}")
       end
-      
+
       def sign_id_for(date)
-        SIGN_IDS[self.sign_symbol_for date]
+        SIGN_IDS[sign_symbol_for date]
       end
-      
+
       def sign_symbol_for(date)
         RANGES.each do |range, sign|
           if range.days.cover? date_for(date[:month], date[:day])
             return sign
           end
         end
-        
-        raise ArgumentError
+        raise ArgumentError, "Invalid attribute type #{date} for #{self}#sign_symbol_for"
       end
     end
   end
